@@ -28,6 +28,10 @@ module CachedResource
         cache_clear
       end
 
+      def get_from_cache(id)
+        cache_read(cache_key(id))
+      end
+
       private
 
       # Try to find a cached response for the given key.  If
@@ -100,7 +104,7 @@ module CachedResource
 
       # Write an entry to the cache for the given key and value.
       def cache_write(key, object)
-        result = cached_resource.cache.write(key, object_to_json(object), :race_condition_ttl => cached_resource.race_condition_ttl, :expires_in => cached_resource.generate_ttl)
+        result = cached_resource.cache.write(key, object_to_json(object), :race_condition_ttl => cached_resource.race_condition_ttl, :expires_in => cached_resource.generate_ttl(object))
         result && cached_resource.logger.info("#{CachedResource::Configuration::LOGGER_PREFIX} WRITE #{key}")
         result
       end
@@ -114,7 +118,12 @@ module CachedResource
 
       # Generate the request cache key.
       def cache_key(*arguments)
-        "#{name.parameterize.gsub("-", "/")}/#{arguments.join('/')}".downcase.delete(' ')
+        arguments_string = arguments.join('/')
+        arguments_key = arguments_string.length > 150 ? Digest::SHA2.hexdigest(arguments_string) : arguments_string
+
+        cache_key_base = cached_resource.cache_key_base || name.parameterize.gsub("-", "/")
+
+        "#{cache_key_base}/#{arguments_key}".downcase.delete(' ')
       end
 
       # Make a full duplicate of an ActiveResource record.

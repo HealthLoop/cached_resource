@@ -1,3 +1,9 @@
+## This fork changes
+* store data as JSON to prevent 'undefined class/module' [pull request](https://github.com/mhgbrown/cached_resource/pull/22)
+* hash long cache keys [pull request](https://github.com/mhgbrown/cached_resource/pull/24)
+* option to set cache key with `cache_key_base` [commit](https://github.com/Adrian2112/cached_resource/commit/a7b02aedb68179242470e3551438b89770fbd93b)
+* add ttl can be set with a value or a lambda that receives the object [commit](https://github.com/Adrian2112/cached_resource/commit/644e54bee01aa56dca6b9e6bcf9d54f8a7d55335)
+
 # CachedResource [![Build Status](https://secure.travis-ci.org/mhgbrown/cached_resource.png)](http://travis-ci.org/mhgbrown/cached_resource)
 CachedResource is a Ruby gem whose goal is to increase the performance of interacting with web services via ActiveResource by caching responses based on request parameters.  It can help reduce the lag created by making repeated requests across a network.
 
