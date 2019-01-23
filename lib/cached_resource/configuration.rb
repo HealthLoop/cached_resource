@@ -6,8 +6,12 @@ module CachedResource
     # default or fallback cache without rails
     CACHE = ActiveSupport::Cache::MemoryStore.new
 
-    # default or fallback logger without rails
-    LOGGER = ActiveSupport::Logger.new(NilIO.instance)
+    # default of fallback logger without rails
+    LOGGER = if defined?(ActiveSupport::Logger)
+        ActiveSupport::Logger.new(NilIO.instance)
+    else
+        ActiveSupport::BufferedLogger.new(NilIO.instance)
+    end
 
     # prefix for log messages
     LOGGER_PREFIX = "[cached_resource]"
@@ -15,19 +19,18 @@ module CachedResource
     # Initialize a Configuration with the given options, overriding any
     # defaults. The following options exist for cached resource:
     # :enabled, default: true
-    # :ttl, default: 604800
-    # :race_condition_ttl: 86400
+    # :ttl, Value or a lambda receives the object to cache and return the ttl default: 604800
     # :ttl_randomization, default: false,
     # :ttl_randomization_scale, default: 1..2,
     # :collection_synchronize, default: false,
     # :collection_arguments, default: [:all]
     # :cache, default: Rails.cache or ActiveSupport::Cache::MemoryStore.new,
-    # :logger, default: Rails.logger or ActiveSupport::Logger.new(NilIO.new),
-    # :cache_key_base, default: nil
+    # :logger, default: Rails.logger or ActiveSupport::BufferedLogger.new(NilIO.new)
+    # :cache_key_base, The cache key you want to use. Defaul: The class name of the object
+    #
     def initialize(options={})
       super({
         :enabled => true,
-        :race_condition_ttl => 86400,
         :ttl => 604800,
         :ttl_randomization => false,
         :ttl_randomization_scale => 1..2,
@@ -35,7 +38,7 @@ module CachedResource
         :collection_arguments => [:all],
         :cache => defined?(Rails.cache)  && Rails.cache || CACHE,
         :logger => defined?(Rails.logger) && Rails.logger || LOGGER,
-        :cache_key_base => nil
+        :cache_key_base => nil,
       }.merge(options))
     end
 

@@ -66,7 +66,6 @@ describe "CachedResource::Configuration" do
     before(:each) do
       class Foo < ActiveResource::Base
         cached_resource :ttl => 1,
-                        :race_condition_ttl => 5,
                         :cache => "cache",
                         :logger => "logger",
                         :enabled => false,
@@ -83,7 +82,6 @@ describe "CachedResource::Configuration" do
     it "should relfect the specified options" do
       cr = Foo.cached_resource
       cr.ttl.should == 1
-      expect(cr.race_condition_ttl).to eq(5)
       cr.cache.should == "cache"
       cr.logger.should == "logger"
       cr.enabled.should == false
@@ -124,7 +122,6 @@ describe "CachedResource::Configuration" do
     before(:each) do
       class Bar < ActiveResource::Base
         cached_resource :ttl => 1,
-                        :race_condition_ttl => 5,
                         :cache => "cache",
                         :logger => "logger",
                         :enabled => false,
@@ -152,7 +149,6 @@ describe "CachedResource::Configuration" do
     before(:each) do
       class Bar < ActiveResource::Base
         cached_resource :ttl => 1,
-                        :race_condition_ttl => 5,
                         :cache => "cache",
                         :logger => "logger",
                         :enabled => false,
@@ -186,7 +182,6 @@ describe "CachedResource::Configuration" do
       cr.custom.should == nil
       cr.ttl_randomization.should == false
       cr.ttl_randomization_scale.should == (1..2)
-      expect(cr.race_condition_ttl).to eq(86400)
     end
 
   end

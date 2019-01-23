@@ -7,21 +7,20 @@ Gem::Specification.new do |s|
   s.version     = CachedResource::VERSION
   s.authors     = "Morgan Brown"
   s.email       = "brown.mhg@gmail.com"
-  s.homepage    = "https://github.com/mhgbrown/cached_resource"
+  s.homepage    = "http://github.com/Ahsizara/cached_resource"
   s.summary     = %q{Caching for ActiveResource}
   s.description = %q{Enables request-based caching for ActiveResource}
-  s.licenses    = ['MIT']
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency "activeresource", ">= 4.0"
-  s.add_runtime_dependency "activesupport", ">= 4.0"
-  s.add_runtime_dependency "nilio", ">= 1.0"
+  s.add_dependency "rake"
+  s.add_dependency "activeresource", ">= 3.2"
+  s.add_dependency "activesupport", ">= 3.2"
+  s.add_dependency "nilio", ">= 1.0"
+  s.add_dependency "oj", "~> 2.0"
 
-  s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
-  s.add_development_dependency "appraisal"
 end

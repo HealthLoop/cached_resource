@@ -1,9 +1,7 @@
 require 'ostruct'
 
 require 'nilio'
-require 'active_support/cache'
 require 'active_support/concern'
-require 'active_support/logger'
 require 'cached_resource/cached_resource'
 require 'cached_resource/configuration'
 require 'cached_resource/caching'
